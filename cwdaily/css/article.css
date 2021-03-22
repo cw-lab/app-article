@@ -141,6 +141,40 @@ blockquote p {
     z-index: -1;
 }
 
+.more {
+	position: relative;
+	display: inline-block;
+	padding-right: calc(1.1em + 5px);
+	color: rgb(214, 12, 24);
+	border-bottom: 1px dashed rgb(214, 12, 24);
+}
+
+.more::after {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	content: '註';
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: rgb(214, 12, 24);
+	width: 1.83333333em;
+	height: 1.83333333em;
+	font-family: "NotoSansCJKtc-Regular";
+	font-size: 0.6em;
+	border: 1px solid rgb(214, 12, 24);
+	border-radius: 50%;
+	transform: translateY(-50%);
+}
+
+.more__text {
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 10px 15px;
+	background-color: rgb(238, 238, 238);
+}
+
 .article__profile {
 	margin-top: 20px;
 	margin-bottom: 20px;
