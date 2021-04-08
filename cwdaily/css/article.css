@@ -69,11 +69,12 @@ p a {
 p img, p iframe {
 	margin-left: -25px;
 	margin-right: -25px;
-	width: calc(100% + 50px);
+	width: calc(100% + 50px) !important;
+	max-width: none !important;
 }
 
 p img {
-	height: auto;
+	height: auto !important;
 }
 
 p iframe {
