@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
+		<title>Document</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400&display=swap">
+		<link rel="stylesheet" href="assets/css/main.css">
+		<script src="https://unpkg.com/vue@next"></script>
+	</head>
+	<body class="index_page">
+		<div id="app">
+			<header>
+				<div class="d-flex">
+					<div class="day line-height-100" @click="isShow = !isShow">
+						<div class="fs-1 font-weight-500 my-0">{{ week }}</div>
+						<div class="fs-6 text-gray-300 mt-5 mb-0">{{ todays.date }}</div>
+						<img src="assets/images/down.svg" width="18" :class="{'active': isShow}" alt="">
+					</div>
+					<div class="calendar px-5 pt-20 pb-5 font-weight-400" v-show="isShow">
+						<div class="week week-title d-flex text-center">
+							<div class="item"><span>日</span></div>
+							<div class="item"><span>一</span></div>
+							<div class="item"><span>二</span></div>
+							<div class="item"><span>三</span></div>
+							<div class="item"><span>四</span></div>
+							<div class="item"><span>五</span></div>
+							<div class="item"><span>六</span></div>
+						</div>
+						<div class="week week-day d-flex text-center">
+							<a class="item text-black" :href="`index.html?date=${week.date}`" v-for="(week, idx) in calendar" :key="idx">
+								<span>{{ week.day }}</span>
+								<i v-if="(idx + 1) == calendar.length">今日</i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</header>
+			<main class="px-20 pb-20">
+				<div class="card" v-for="(item, idx) in todayLists" :key="idx">
+					<a class="b-block card-img" v-if="idx == 0 | idx == 3 | idx == 6" :href="`article.html?id=${item.id}&date=${date}`">
+						<img :src="item.image_url" width="100%" class="b-block" alt="">
+					</a>
+					<div class="card-body">
+						<a class="d-block" :href="`article.html?id=${item.id}&date=${date}`">
+							<span class="card-subchannel d-block fs-6 mt-0 mb-5">{{ item.channel }}</span>
+							<span class="card-title card-title d-block fs-3 my-0">
+								<!-- <img v-if="item.article_status == 2" src="assets/images/lock.svg" width="14" class="lock" alt=""> -->
+								{{ item.title }}
+							</span>
+						</a>
+						<button type="button" class="d-flex p-0 mt-5">
+							<img src="assets/images/earphone.svg" width="18" alt="">
+							<span class="d-block fs-6 text-black my-0">{{ item.audio_duration }}</span>
+						</button>
+					</div>
+				</div>
+				<div class="black" v-show="isShow" @click="isShow = !isShow"></div>
+			</main>
+		</div>
+	</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+	<script type="module">
+		const App = {
+			data() {
+				return {
+					date: '',
+					week: '',
+					calendar: '',
+					isShow: false,
+					todays: [],
+					todayLists: [],
+				}
+			},
+			mounted() {
+				axios
+				.get(`https://api-app.cw.com.tw/cw-daily/article-group/${this.date}`)
+				.then(response => (
+					this.todays = response.data.items[0],
+					this.todayLists = response.data.items[0].objects
+				))
+				.then(() => {
+					this.getWeekDay(this.date)
+					this.getPast30()
+				})
+			},
+			methods: {
+				getWeekDay(date) {
+					date = date.split("-");
+					const newDate = new Date(date[0], date[1] - 1, date[2]).getTime();
+					const options = { weekday: 'long'};
+					this.week = new Intl.DateTimeFormat('en-US', options).format(newDate)
+				},
+				getPast30() {
+					const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+					const today = new Date();
+					let calendar = [];
+					for (let i = 1; i <= 30; i++) {
+						let day = '';
+						let date = '';
+						day = new Date(today.getTime() - i * 24 * 60 * 60 * 1000).toLocaleDateString().split('/').pop();
+						date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000).toLocaleDateString('en-CA');
+						calendar.push({day, date})
+					}
+					this.calendar = calendar;
+				}
+			},
+			created() {
+				let uri = window.location.search.substring(1); 
+				let params = new URLSearchParams(uri);
+				this.date = params.get("date");
+			}
+		};
+
+		Vue.createApp(App).mount('#app');
+	</script>
+</html>

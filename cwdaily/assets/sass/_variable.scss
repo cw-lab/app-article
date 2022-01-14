@@ -1,0 +1,42 @@
+//
+$container: 1170px;
+$init: 0.0625rem;   //1px
+
+$fs26: $init*26;
+$fs22: $init*22;
+$fs20: $init*20;
+$fs18: $init*18;
+$fs16: $init*16;
+$fs14: $init*14;
+
+//
+$h1: $fs26;
+$h2: $fs22;
+$h3: $fs20;
+$h4: $fs18;
+$h5: $fs16;
+$h6: $fs14;
+
+//
+$black:         #000 !default;
+$gray-400:      #282828 !default;
+$gray-300:      #939EA7 !default;
+$gray-200:      #D3D5D7 !default;
+$gray-100:      #EEEEEE !default;
+$white:         #fff !default; //background
+
+$cw_red:        #D60C18 !default;
+$preface_blue:  #003A9F !default;
+
+//
+$primary:           $cw_red !default;
+$secondary:         $gray-300 !default;
+
+//
+$facebook:      #1877f2 !default;
+$line:          #00c200 !default;
+$instagram:     #dd2a7b !default;
+$weibo:         #e6162d !default;
+$rss:           #ff5700 !default;
+$twitter:       #00acee !default;
+$whatapp:       #4fce5d !default;

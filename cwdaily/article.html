@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
+		<title>Document</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400&display=swap">
+		<link rel="stylesheet" href="assets/css/main.css">
+		<script src="https://unpkg.com/vue@next"></script>
+	</head>
+	<body class="article_page">
+        <div id="app">
+            <a class="button--back" :href="`index.html?date=${date}`">
+                <img src="assets/images/left.svg" width="12" alt="">
+            </a>
+            <main>
+                <img class="main-img" :src="article.image_url" width="100%" alt="">
+                <div class="px-20">
+                    <!-- <div class="fs-6 my-0 font-weight-400 text-primary">國際新聞掃描</div> -->
+                    <div class="fs-1 my-20 font-weight-400 line-height-150">{{ article.title }}</div>
+                    <p class="preface fs-3 my-20">
+                        {{ article.preface }}
+                    </p>
+                    <div class="fs-6 mt-15 mb-0 text-gray-300">
+                        <span class="author" v-for="(author, idx) in authors" :key="idx">{{ author }}</span>
+                    </div>
+                    <div class="content mt-20" v-html="article.content"></div>
+                </div>
+                <img src="assets/images/banner.jpg" class="d-block mb-20 mx-auto" alt="">
+            </main>
+            <ul class="toolbar d-flex">
+                <li><img src="assets/images/toolbar/favorite.svg" alt=""></li>
+                <li><img src="assets/images/toolbar/word.svg" alt=""></li>
+                <li><img src="assets/images/toolbar/earphone.svg" alt=""></li>
+                <li><img src="assets/images/toolbar/share.svg" alt=""></li>
+            </ul>
+        </div>
+	</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+	<script type="module">
+		const App = {
+			data() {
+				return {
+                    id: 0,
+					date: '',
+                    article: '',
+                    authors: []
+				}
+			},
+			mounted() {
+				axios
+				.get(`https://api-app.cw.com.tw/cw-daily/article/${this.id}`)
+				.then(response => (
+					this.article = response.data.items[0],
+                    this.article.author_writer_type.forEach((item, idx) => {
+                        this.authors.push(`${item}．${this.article.author[idx]}`)
+                    })
+				))
+			},
+			created() {
+				let uri = window.location.search.substring(1); 
+				let params = new URLSearchParams(uri);
+				this.id = params.get("id");
+				this.date = params.get("date");
+			}
+		};
+
+		Vue.createApp(App).mount('#app');
+	</script>
+</html>

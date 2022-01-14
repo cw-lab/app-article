@@ -1,0 +1,269 @@
+
+@import "_mixin";
+@import "_variable";
+@import "_common";
+@import "_container";
+@import "_typography";
+@import "_color";
+
+body {
+    max-width: 768px;
+    margin: auto;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    background-color: rgba($white, 0.95);
+    backdrop-filter: blur(5px);
+    z-index: 1;
+    .day {
+        position: relative;
+        padding-left: 12px;
+        padding-right: 26px;
+        border-left: 8px solid $primary;
+        img {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            &.active {
+                transform: translateY(-50%) rotate(180deg);
+            }
+        }
+    }
+    .calendar {
+        position: absolute;
+        top: calc(100% - 3px);
+        left: 0;
+        right: 0;
+        background-color: $white;
+        z-index: 1;
+        .week {
+            flex-wrap: wrap;
+            &.week-title {
+                color: $gray-300;
+                font-size: 0.875rem;
+                padding-bottom: 25px;
+            }
+            &.week-day {
+                font-size: 1.125rem;
+                .item {
+                    position: relative;
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                    span {
+                        display: block;
+                        margin: auto;
+                        width: 34px;
+                        height: 34px;
+                        line-height: 34px;
+                        border-radius: 50%;
+                    }
+                    i {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        color: $gray-300;
+                        font-size: $h6;
+                        font-style: normal;
+                        font-weight: 300;
+                    }
+                }
+            }
+            .item {
+                position: relative;
+                width: (100%/7);
+                z-index: 1;
+                &.now {
+                    color: $white;
+                    span {
+                        background-color: $primary;
+                    }
+                    i {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+main {
+    position: relative;
+    .index_page & {
+        padding-top: 95px;
+    }
+    .article_page & {
+        padding-top: 76px;
+        padding-bottom: 83px;
+        .main-img {
+            margin-top: -77px;
+            width: 100%;
+        }
+        .preface {
+            color: $preface_blue;
+        }
+        .author {
+            + .author {
+                &::before {
+                    @include beforeafter('、', inline)
+                }
+            }
+        }
+        .content {
+            font-size: $fs20;
+            h2, h3 {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                font-size: $fs22;
+            }
+            p {
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+            img {
+                display: block;
+                margin-left: -20px;
+                margin-right: -20px;
+                width: calc(100% + 40px) !important;
+                height: auto !important;
+                + .source {
+                    margin-top: 5px;
+                }
+            }
+            .source {
+                display: block;
+                color: $gray-300;
+                font-size: $fs14;
+                img {
+                    margin-bottom: 5px;
+                }
+            }
+            hr {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                height: 1px;
+                background-color: $gray-200;
+                border: 0;
+            }
+            blockquote {
+                position: relative;
+                margin: 30px 10px;
+                padding: 20px 25px;
+                font-weight: 400;
+                &::before,
+                &::after {
+                    content: '';
+                    position: absolute;
+                    display: inline-block;
+                    width: 1.25rem;
+                    height: 1rem;
+                    background-image: url('https://storage.googleapis.com/www-cw-com-tw/cw-daily-app/images/right-quotation-sign.svg');
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                }
+                &::before {
+                    top: 0;
+                    left: 0;
+                }
+                &::after {
+                    bottom: 0;
+                    right: 0;
+                    transform: rotate(180deg);
+                }
+                p {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+    .black {
+        position: fixed;
+        top: 50%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba($black, 0.4);
+    }
+    .card {
+        background-color: $white;
+        overflow: hidden;
+        border: 1px solid $gray-100;
+        border-radius: 10px;
+        box-shadow: 0px 5px 10px rgba($black, 0.15);
+        + .card {
+            margin-top: 20px;
+        }
+        .card-img {
+            img {
+                width: 100%;
+            }
+        }
+        .card-body {
+            padding: 20px 35px;
+            &::after {
+                @include clear;
+            }
+            .card-subchannel {
+                color: $primary;
+            }
+            .card-title {
+                position: relative;
+                color: $black;
+                img.lock {
+                    position: absolute;
+                    top: 0.35em;
+                    right: calc(100% + 8px);
+                }
+            }
+        }
+        button {
+            float: right;
+            white-space: nowrap;
+            background-color: transparent;
+            border: 0;
+            img {
+                margin-right: 8px;
+            }
+        }
+        &.card-read {
+            .card-subchannel, .card-title {
+                color: $gray-300;
+            }
+        }
+    }
+}
+
+.button--back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba($black, 0.8);
+    box-shadow: 0px 5px 10px rgba($black, 0.1);
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.toolbar {
+    @include list(0, 17px 40px 36px, none);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: space-between;
+    background: $white;
+    box-shadow: 0px -5px 10px rgba($black, 0.15);
+}

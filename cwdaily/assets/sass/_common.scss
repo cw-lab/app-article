@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&display=swap');
+
+body {
+	position: relative;
+	font-family: 'Noto Sans TC', sans-serif;
+	font-weight: 300;
+	line-height: 1.5;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeSpeed;
+}
+
+* {
+	box-sizing: border-box;
+	outline: 0;
+	&::before,
+	&::after {
+		box-sizing: border-box;
+		outline: 0;
+	}
+}
+
+a {
+	text-decoration: none;
+}
+
+img {
+	display: block;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+	font-family: inherit;
+}
+
+.sr-only {
+	position: absolute !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	width: 0 !important;
+	height: 0 !important;
+	font-size: 0 !important;
+}

@@ -1,0 +1,71 @@
+@charset"UTF-8";
+
+$gutter-width: 40px;
+$grid-sum: 12;
+
+$grid-breakpoints: (
+	"": false,
+	xs: 360px,
+	sm: 414px,
+	md: 768px
+);
+
+$aligns: left, center, right;
+$lineHeights: 1, 1.25, 1.5, 1.75, 2;
+$weights: 300, 400, 500;
+$displays: block, inline-block, none, flex;
+$spacies: (
+	"0": 0px,
+	"5": 5px,
+	"10": 10px,
+	"15": 15px,
+	"20": 20px,
+	"30": 30px,
+	"40": 40px,
+	"auto": auto,
+);
+$property: "m", "p";
+$sides: "", "t", "b", "l", "r", "x", "y";
+
+@mixin list($margin, $padding, $style) {
+	margin: $margin;
+	padding: $padding;
+	list-style: $style;
+}
+
+@mixin beforeafter($content, $display) {
+	content: $content;
+	display: $display;
+}
+
+@mixin clear() {
+	@include beforeafter('', table);
+	clear: both;
+}
+
+@mixin lineclamp($line) {
+	display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: $line;
+	-webkit-box-orient: vertical;
+}
+
+@mixin button($defaultColor, $hoverColor) {
+	display: inline-block;
+	// padding-top: 3px;
+	min-width: 140px;
+	color: $defaultColor;
+	font-size: 0.875rem;
+	line-height: 2.5;
+	text-align: center;
+	background-color: transparent;
+	border: 1px solid $defaultColor;
+	cursor: pointer;
+	&:hover, &:active, &.active, &:focus {
+		color: $hoverColor;
+		background-color: $defaultColor;
+	}
+	@media screen and (min-width: 1024px) {
+		min-width: 150px;
+	}
+}

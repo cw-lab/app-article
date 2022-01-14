@@ -1,0 +1,23 @@
+$typos: $h1, $h2, $h3, $h4, $h5, $h6;
+
+%typo-init {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+%typo-weight {
+	font-weight: 400;
+}
+
+@for $i from 1 through length($typos) {
+	h#{$i}, .h#{$i}, .fs-#{$i} {
+		@extend %typo-init;
+		font-size: #{nth($typos, $i)};
+	}
+	h#{$i}, .h#{$i} {
+		@extend %typo-weight;
+	}
+}
+
+b, strong {
+	@extend %typo-weight;
+}
