@@ -32,7 +32,7 @@
 							<div class="item"><span>六</span></div>
 						</div>
 						<div class="week week-day d-flex text-center">
-							<a class="item text-black" :href="`index.html?date=${week.date}`" v-for="(week, idx) in calendar" :key="idx">
+							<a class="item text-black" :class="{'now': week.date == todays.date}" :href="`index.html?date=${week.date}`" v-for="(week, idx) in calendar" :key="idx">
 								<span>{{ week.day }}</span>
 								<i v-if="(idx + 1) == calendar.length">今日</i>
 							</a>
@@ -49,7 +49,6 @@
 						<a class="d-block" :href="`article.html?id=${item.id}&date=${date}`">
 							<span class="card-subchannel d-block fs-6 mt-0 mb-5">{{ item.channel }}</span>
 							<span class="card-title card-title d-block fs-3 my-0">
-								<!-- <img v-if="item.article_status == 2" src="assets/images/lock.svg" width="14" class="lock" alt=""> -->
 								{{ item.title }}
 							</span>
 						</a>
@@ -99,12 +98,18 @@
 					const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 					const today = new Date();
 					let calendar = [];
-					for (let i = 1; i <= 30; i++) {
-						let day = '';
-						let date = '';
+					let day = '';
+					let date = '';
+					const firstWeekDay = new Date(today.getTime() - 30* 24 * 60 * 60 * 1000).getDay();
+					for (let i = 0; i < 30; i++) {
 						day = new Date(today.getTime() - i * 24 * 60 * 60 * 1000).toLocaleDateString().split('/').pop();
 						date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000).toLocaleDateString('en-CA');
-						calendar.push({day, date})
+						calendar.unshift({day, date})
+					}
+					for (let i = 0; i <= firstWeekDay; i++) {
+						day = '';
+						date = '';
+						calendar.unshift({day, date})
 					}
 					this.calendar = calendar;
 				}
