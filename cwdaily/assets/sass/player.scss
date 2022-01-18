@@ -1,0 +1,60 @@
+@import "_mixin";
+@import "_variable";
+
+.player-group {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    .index_page & {
+        border-bottom: 35px solid $gray-100;
+    }
+    .article_page & {
+        bottom: 83px;
+    }
+    &.scroll {
+        .article_page & {
+            bottom: 85px;
+        }
+        .player {
+            padding: 0;
+            height: 0;
+            overflow: hidden;
+        }
+    }
+}
+
+.player {
+    display: grid;
+    grid-template-columns: 30px auto 30px;
+    grid-gap: 10px;
+    align-items: center;
+    width: 100%;
+    padding: 12px 15px;
+    background-color: $gray-100;
+    svg {
+        display: block;
+    }
+    .name {
+        @include lineclamp(2);
+        font-size: $fs18;
+        line-height: 1.5;
+    }
+    .controls {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        .slider {
+            height: 2px;
+            background-color: $gray-200;
+            .progress {
+                width: 0;
+                height: 2px;
+                background-color: $primary;
+            }
+        }
+    }
+}

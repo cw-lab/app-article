@@ -4,13 +4,13 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
-		<title>Document</title>
+		<meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
+		<title>列表頁</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400&display=swap">
-		<link rel="stylesheet" href="assets/css/main.css">
-		<script src="https://unpkg.com/vue@next"></script>
+		<link rel="stylesheet" href="assets/css/main.min.css">
+		<link rel="stylesheet" href="assets/css/player.min.css">
 	</head>
 	<body class="index_page">
 		<div id="app">
@@ -41,6 +41,20 @@
 				</div>
 			</header>
 			<main class="px-20 pb-20">
+				<div class="card card-espresso" v-show="espresso.state">
+					<div class="card-body">
+						<a class="d-block" :href="`espresso.html?date=${date}`">
+							<span class="card-title d-block fs-3 font-weight-500 my-0">
+								國際新聞掃描
+							</span>
+							<ul class="card-subtitle d-block fs-4 my-0 p-0" v-html="espresso.list"></ul>
+						</a>
+						<button type="button" class="d-flex p-0 mt-5" @click="clickPlay(`${date} 國際新聞掃描`, espresso.audio_url)">
+							<img src="assets/images/earphone.svg" width="18" alt="">
+							<span class="d-block fs-6 text-black my-0">{{ espresso.audio_duration }}</span>
+						</button>
+					</div>
+				</div>
 				<div class="card" v-for="(item, idx) in todayLists" :key="idx">
 					<a class="b-block card-img" v-if="idx == 0 | idx == 3 | idx == 6" :href="`article.html?id=${item.id}&date=${date}`">
 						<img :src="item.image_url" width="100%" class="b-block" alt="">
@@ -48,34 +62,73 @@
 					<div class="card-body">
 						<a class="d-block" :href="`article.html?id=${item.id}&date=${date}`">
 							<span class="card-subchannel d-block fs-6 mt-0 mb-5">{{ item.channel }}</span>
-							<span class="card-title card-title d-block fs-3 my-0">
+							<span class="card-title d-block fs-3 my-0">
 								{{ item.title }}
 							</span>
 						</a>
-						<button type="button" class="d-flex p-0 mt-5">
+						<button type="button" class="d-flex p-0 mt-5" @click="clickPlay(item.title, item.audio_url)">
 							<img src="assets/images/earphone.svg" width="18" alt="">
 							<span class="d-block fs-6 text-black my-0">{{ item.audio_duration }}</span>
 						</button>
 					</div>
 				</div>
 				<div class="black" v-show="isShow" @click="isShow = !isShow"></div>
+				<div class="player-group" :class="{ 'scroll': scrollToggle }" v-show="playerToggle">
+					<div class="player">
+						<div class="play-pause-btn" v-show="playerToggle">  
+							<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M21.2625 13.7081L10.2625 7.20524C9.36875 6.67714 8 7.18962 8 8.49581V21.4984C8 22.6702 9.27187 23.3765 10.2625 22.789L21.2625 16.2892C22.2437 15.7111 22.2468 14.2862 21.2625 13.7081Z" fill="black" class="play-pause-icon" id="playPause"/>
+							</svg>
+						</div>
+						<div class="controls">
+							<div class="slider" data-direction="horizontal">
+								<div class="progress">
+									<div class="pin" id="progress-pin" data-method="rewind"></div>
+								</div>
+							</div>
+						</div>
+						<div class="name">{{ audio.title }}</div>
+						<div class="close" @click="closePlay()">
+							<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M15.6633 14.9998L22.3632 8.30077C22.5463 8.11769 22.5463 7.82038 22.3632 7.63731C22.1801 7.45423 21.8827 7.45423 21.6996 7.63731L14.9998 14.3364L8.29989 7.63877C8.11679 7.4557 7.82091 7.4557 7.63781 7.63877C7.45471 7.82184 7.45471 8.11916 7.63781 8.30223L14.3362 14.9998L7.63781 21.6989C7.45471 21.8819 7.45471 22.1793 7.63781 22.3623C7.72863 22.4531 7.84874 22.5 7.96885 22.5C8.08896 22.5 8.20907 22.4546 8.29989 22.3623L14.9998 15.6633L21.6996 22.3623C21.7904 22.4531 21.9106 22.5 22.0307 22.5C22.1508 22.5 22.2709 22.4546 22.3617 22.3623C22.5448 22.1793 22.5448 21.8819 22.3617 21.6989L15.6633 14.9998Z" fill="black" stroke="black"/>
+							</svg>
+						</div>
+						<audio crossorigin>
+							<source :src="audio.url" type="audio/mpeg">
+						</audio>
+					</div>
+				</div>
 			</main>
 		</div>
 	</body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
 	<script type="module">
-		const App = {
-			data() {
+		import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.26/vue.esm-browser.min.js';
+		const app = createApp({
+			data () {
 				return {
+					playerToggle: false,
+					scrollToggle: false,
 					date: '',
 					week: '',
 					calendar: '',
 					isShow: false,
 					todays: [],
 					todayLists: [],
+					espresso: {
+						state: false,
+						list: '',
+						audio_url: '',
+						audio_duration: '',
+					},
+					audio: {
+						id: 0,
+						title: '',
+						url: ''
+					}
 				}
 			},
-			mounted() {
+			mounted () {
 				axios
 				.get(`https://api-app.cw.com.tw/cw-daily/article-group/${this.date}`)
 				.then(response => (
@@ -86,6 +139,40 @@
 					this.getWeekDay(this.date)
 					this.getPast30()
 				})
+				.then(() => {
+					this.playerSimplify();
+					let bodyHeight = document.body.offsetHeight;
+					let initTop = 0;
+					window.onscroll = () => {
+						let scrollTop = window.scrollY;
+						if ( scrollTop < bodyHeight, initTop > 0 ) {
+							if ( initTop > scrollTop ) {
+								this.scrollToggle = false;
+							} else {
+								this.scrollToggle = true;
+							}
+						}
+						initTop = scrollTop;
+					};
+				})
+				
+				axios
+				.get(`https://sheets.googleapis.com/v4/spreadsheets/1nfSKEEJz0TnnrM2mhH9RjpH47zpBmhL0DpT5Hw1VXIQ/values/A:G?key=AIzaSyAYvr6hqxZzO_tSoGAEW6SYcQjrH7BCIHg`)
+				.then(response => (
+					console.log(response.data.values),
+					response.data.values.forEach((item, index) => {
+						if ( item[0] == this.date ) {
+							this.espresso.state = true
+							let data = response.data.values[index];
+							this.espresso.audio_url = data[3]
+							this.espresso.audio_duration = data[4]
+							let listTemp = data[5].split('\n');
+							listTemp.forEach(element => {
+								this.espresso.list += `<li>${element}</li>`
+							});
+						}
+					})
+				))
 			},
 			methods: {
 				getWeekDay(date) {
@@ -106,21 +193,154 @@
 						date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000).toLocaleDateString('en-CA');
 						calendar.unshift({day, date})
 					}
-					for (let i = 0; i <= firstWeekDay; i++) {
-						day = '';
-						date = '';
-						calendar.unshift({day, date})
+					if ( firstWeekDay < 6 ) {
+						for (let i = 0; i <= firstWeekDay; i++) {
+							day = '';
+							date = '';
+							calendar.unshift({day, date})
+						}
 					}
 					this.calendar = calendar;
-				}
+				},
+				playerSimplify(state) {
+					var audioPlayer = document.querySelector('.player');
+					var playPause = audioPlayer.querySelector('#playPause');
+					var playpauseBtn = audioPlayer.querySelector('.play-pause-btn');
+					var progress = audioPlayer.querySelector('.progress');
+					var sliders = audioPlayer.querySelectorAll('.slider');
+					var player = audioPlayer.querySelector('audio');
+					var draggableClasses = ['pin'];
+					var currentlyDragged = null;
+					window.addEventListener('mousedown', function(event) {
+						if(!isDraggable(event.target)) return false;
+						currentlyDragged = event.target;
+						let handleMethod = currentlyDragged.dataset.method;
+						this.addEventListener('mousemove', window[handleMethod], false);
+						window.addEventListener('mouseup', () => {
+							currentlyDragged = false;
+							window.removeEventListener('mousemove', window[handleMethod], false);
+						}, false);
+					});
+					playpauseBtn.addEventListener('click', togglePlay);
+					player.addEventListener('timeupdate', updateProgress);
+					player.addEventListener('canplay', makePlay);
+					player.addEventListener('ended', function(){
+						playPause.attributes.d.value = "M21.2625 13.7081L10.2625 7.20524C9.36875 6.67714 8 7.18962 8 8.49581V21.4984C8 22.6702 9.27187 23.3765 10.2625 22.789L21.2625 16.2892C22.2437 15.7111 22.2468 14.2862 21.2625 13.7081Z";
+					});
+					sliders.forEach(slider => {
+						let pin = slider.querySelector('.pin');
+						slider.addEventListener('click', window[pin.dataset.method]);
+					});
+					function isDraggable(el) {
+						let canDrag = false;
+						let classes = Array.from(el.classList);
+						draggableClasses.forEach(draggable => {
+							if(classes.indexOf(draggable) !== -1)
+								canDrag = true;
+						})
+						return canDrag;
+					}
+					function inRange(event) {
+						let rangeBox = getRangeBox(event);
+						let rect = rangeBox.getBoundingClientRect();
+						let direction = rangeBox.dataset.direction;
+						if(direction == 'horizontal') {
+							var min = rangeBox.offsetLeft;
+							var max = min + rangeBox.offsetWidth; 
+							if(event.clientX < min || event.clientX > max) return false;
+						} else {
+							var min = rect.top;
+							var max = min + rangeBox.offsetHeight; 
+							if(event.clientY < min || event.clientY > max) return false;
+						}
+						return true;
+					}
+					function updateProgress() {
+						var current = player.currentTime;
+						var percent = (current / player.duration) * 100;
+						progress.style.width = percent + '%';
+					}
+					function getRangeBox(event) {
+						let rangeBox = event.target;
+						let el = currentlyDragged;
+						if(event.type == 'click' && isDraggable(event.target)) {
+							rangeBox = event.target.parentElement.parentElement;
+						}
+						if(event.type == 'mousemove') {
+							rangeBox = el.parentElement.parentElement;
+						}
+						return rangeBox;
+					}
+					function getCoefficient(event) {
+						let slider = getRangeBox(event);
+						let rect = slider.getBoundingClientRect();
+						let K = 0;
+						if(slider.dataset.direction == 'horizontal') {
+							let offsetX = event.clientX - slider.offsetLeft;
+							let width = slider.clientWidth;
+							K = offsetX / width;
+						} else if(slider.dataset.direction == 'vertical') {
+							let height = slider.clientHeight;
+							var offsetY = event.clientY - rect.top;
+							K = 1 - offsetY / height;
+						}
+						return K;
+					}
+					function formatTime(time) {
+						var min = Math.floor(time / 60);
+						var sec = Math.floor(time % 60);
+						return min + ':' + ((sec<10) ? ('0' + sec) : sec);
+					}
+					function startPlay() {
+						playPause.attributes.d.value = "M8 7.55937V22.4406C8 22.75 8.22346 23 8.5 23H10.5C10.7765 23 11 22.75 11 22.4406V7.55937C11 7.25 10.7765 7 10.5 7H8.5C8.22346 7 8 7.25 8 7.55937ZM19 7.55937V22.4406C19 22.75 19.2235 23 19.5 23H21.5C21.7765 23 22 22.75 22 22.4406V7.55937C22 7.25 21.7765 7 21.5 7H19.5C19.2235 7 19 7.25 19 7.55937Z";
+						player.load();
+						player.play();
+					}
+					function stopPlay() {
+						playPause.attributes.d.value = "M21.2625 13.7081L10.2625 7.20524C9.36875 6.67714 8 7.18962 8 8.49581V21.4984C8 22.6702 9.27187 23.3765 10.2625 22.789L21.2625 16.2892C22.2437 15.7111 22.2468 14.2862 21.2625 13.7081Z";
+						player.pause();
+					}
+					function togglePlay() {
+						if(player.paused) {
+							startPlay();
+						} else {
+							stopPlay();
+						}
+					}
+					function makePlay() {
+						playpauseBtn.style.display = 'block';
+					}
+					switch (state) {
+						case 0:
+							startPlay();
+							break;
+					
+						default:
+							stopPlay();
+							break;
+					}
+				},
+				clickPlay(title, url) {
+					this.playerToggle = true
+					this.scrollToggle = false
+					this.audio.title = title 
+					this.audio.url = url
+					this.playerSimplify(0)
+				},
+				closePlay() {
+					this.playerToggle = false
+					this.scrollToggle = true
+					this.audio.title = '' 
+					this.audio.url = ''
+					this.playerSimplify(1)
+				},
 			},
-			created() {
+			created () {
 				let uri = window.location.search.substring(1); 
 				let params = new URLSearchParams(uri);
 				this.date = params.get("date");
 			}
-		};
-
-		Vue.createApp(App).mount('#app');
+		});
+		app.mount('#app')
 	</script>
 </html>

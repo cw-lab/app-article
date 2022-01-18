@@ -1,0 +1,72 @@
+.player-group {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.index_page .player-group {
+  border-bottom: 35px solid #EEEEEE;
+}
+
+.article_page .player-group {
+  bottom: 83px;
+}
+
+.article_page .player-group.scroll {
+  bottom: 85px;
+}
+
+.player-group.scroll .player {
+  padding: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.player {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 30px auto 30px;
+      grid-template-columns: 30px auto 30px;
+  grid-gap: 10px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #EEEEEE;
+}
+
+.player svg {
+  display: block;
+}
+
+.player .name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.player .controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.player .controls .slider {
+  height: 2px;
+  background-color: #D3D5D7;
+}
+
+.player .controls .slider .progress {
+  width: 0;
+  height: 2px;
+  background-color: #D60C18;
+}
+/*# sourceMappingURL=player.css.map */

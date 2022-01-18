@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
-		<title>文章頁</title>
+		<title>國際新聞掃描文章頁</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400&display=swap">
@@ -18,17 +18,13 @@
 				<img src="assets/images/left.svg" width="12" alt="">
 			</a>
 			<main>
-				<img class="main-img" :src="article.image_url" width="100%" alt="">
 				<div class="px-20">
-					<!-- <div class="fs-6 my-0 font-weight-400 text-primary">國際新聞掃描</div> -->
-					<div class="fs-1 my-20 font-weight-400 line-height-150">{{ article.title }}</div>
-					<p class="preface fs-3 my-20">
-						{{ article.preface }}
-					</p>
+					<div class="fs-6 my-0 font-weight-400 text-primary">國際新聞掃描</div>
+					<div class="fs-1 mt-0 mb-20 font-weight-400 line-height-150">{{ date }}</div>
 					<div class="fs-6 mt-15 mb-0 text-gray-300">
-						<span class="author" v-for="(author, idx) in authors" :key="idx">{{ author }}</span>
+						<span class="author">{{ author.type }}．{{ author.name }}</span>
 					</div>
-					<div class="content mt-20" v-html="article.content"></div>
+					<div class="content mt-20" v-html="article"></div>
 				</div>
 				<img src="assets/images/banner.jpg" class="d-block mb-20 mx-auto" alt="">
 				<div class="player-group" :class="{ 'scroll': scrollToggle }" v-show="playerToggle">
@@ -60,7 +56,7 @@
 			<ul class="toolbar d-flex">
 				<li><img src="assets/images/toolbar/favorite.svg" alt=""></li>
 				<li><img src="assets/images/toolbar/word.svg" alt=""></li>
-				<li @click="clickPlay(article.id, article.title, article.audio_url)"><img src="assets/images/toolbar/earphone.svg" alt=""></li>
+				<li @click="clickPlay(audio.title, audio.url)"><img src="assets/images/toolbar/earphone.svg" alt=""></li>
 				<li><img src="assets/images/toolbar/share.svg" alt=""></li>
 			</ul>
 		</div>
@@ -76,9 +72,11 @@
 					id: 0,
 					date: '',
 					article: '',
-					authors: [],
+					author: {
+						type: '',
+						name: ''
+					},
 					audio: {
-						id: 0,
 						title: '',
 						url: ''
 					}
@@ -86,11 +84,19 @@
 			},
 			mounted () {
 				axios
-				.get(`https://api-app.cw.com.tw/cw-daily/article/${this.id}`)
+				.get(`https://sheets.googleapis.com/v4/spreadsheets/1nfSKEEJz0TnnrM2mhH9RjpH47zpBmhL0DpT5Hw1VXIQ/values/A:G?key=AIzaSyAYvr6hqxZzO_tSoGAEW6SYcQjrH7BCIHg`)
 				.then(response => (
-					this.article = response.data.items[0],
-					this.article.author_writer_type.forEach((item, idx) => {
-						this.authors.push(`${item}．${this.article.author[idx]}`)
+					console.log(response.data.values),
+					response.data.values.forEach((item, index) => {
+						if ( item[0] == this.date ) {
+							console.log(item);
+							let data = response.data.values[index];
+							this.author.type = data[1]
+							this.author.name = data[2]
+							this.audio.title = `${this.date} 國際新聞掃描`
+							this.audio.url = data[3]
+							this.article = data[6]
+						}
 					})
 				))
 				.then(() => {
@@ -229,10 +235,9 @@
 							break;
 					}
 				},
-				clickPlay(id, title, url) {
+				clickPlay(title, url) {
 					this.playerToggle = true
 					this.scrollToggle = false
-					this.audio.id = id
 					this.audio.title = title 
 					this.audio.url = url
 					this.playerSimplify(0)
@@ -240,7 +245,6 @@
 				closePlay() {
 					this.playerToggle = false
 					this.scrollToggle = true
-					this.audio.id = ''
 					this.audio.title = '' 
 					this.audio.url = ''
 					this.playerSimplify(1)

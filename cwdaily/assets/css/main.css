@@ -2210,7 +2210,7 @@ main {
 
 main .black {
   position: fixed;
-  top: 50%;
+  top: 40%;
   bottom: 0;
   left: 0;
   right: 0;
@@ -2274,6 +2274,32 @@ main .card.card-read .card-subchannel, main .card.card-read .card-title {
   color: #939EA7;
 }
 
+main .card-espresso {
+  background-color: #EEEEEE;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+main .card-espresso .card-body .card-title {
+  color: #D60C18;
+}
+
+main .card-espresso .card-body .card-subtitle {
+  margin-left: -0.125em;
+  color: #000;
+  list-style: none;
+}
+
+main .card-espresso .card-body .card-subtitle li {
+  text-indent: -1em;
+  padding-left: 1em;
+}
+
+main .card-espresso .card-body .card-subtitle li::before {
+  content: "・";
+  display: inline;
+}
+
 .button--back {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2310,5 +2336,6 @@ main .card.card-read .card-subchannel, main .card.card-read .card-title {
   background: #fff;
   -webkit-box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.15);
           box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.15);
+  z-index: 1;
 }
 /*# sourceMappingURL=main.css.map */
