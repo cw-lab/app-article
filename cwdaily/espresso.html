@@ -5,12 +5,35 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
+		<meta name="robots" content="noindex,nofollow">
 		<title>國際新聞掃描文章頁</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400&display=swap">
 		<link rel="stylesheet" href="assets/css/main.min.css">
 		<link rel="stylesheet" href="assets/css/player.min.css">
+		<script type="text/javascript">
+			(function (w, d, s, l, i) {
+				w[l] = w[l] || []
+				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+				var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''
+				j.async = true
+				j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl
+				f.parentNode.insertBefore(j, f)
+			})(window, document, 'script', 'dataLayer', 'GTM-NL5VDDN')
+			function checkDataLayerPromoViewExists (data) {
+				let obj = { exists: false, key: null }
+				_.forEach(data, function (value, key) {
+					if (_.hasIn(value, ['ecommerce', 'promoView', 'promotions'])) {
+						obj.exists = true
+						obj.key = key
+						return null
+					}
+				})
+				return obj
+			}
+		</script>
 	</head>
 	<body class="article_page">
 		<div id="app">
@@ -21,7 +44,7 @@
 				<div class="px-20">
 					<div class="fs-6 my-0 font-weight-400 text-primary">{{ chineseDate(date) }}</div>
 					<div class="fs-1 mt-0 mb-20 font-weight-400 line-height-150">國際新聞掃描</div>
-					<div class="fs-6 mt-15 mb-0 text-gray-300">
+					<div class="fs-6 mt-15 mb-40 text-gray-300">
 						<span class="author">{{ author.type }}．{{ author.name }}</span>
 					</div>
 					<div class="content mt-20" v-html="article"></div>
@@ -85,7 +108,7 @@
 			},
 			mounted () {
 				axios
-				.get(`https://sheets.googleapis.com/v4/spreadsheets/1nfSKEEJz0TnnrM2mhH9RjpH47zpBmhL0DpT5Hw1VXIQ/values/A:G?key=AIzaSyAYvr6hqxZzO_tSoGAEW6SYcQjrH7BCIHg`)
+				.get(`https://sheets.googleapis.com/v4/spreadsheets/1fwPre8HbO2wTnm1loJJ7T37EiHHroDX54ZjWqi48k1o/values/A:G?key=AIzaSyAYvr6hqxZzO_tSoGAEW6SYcQjrH7BCIHg`)
 				.then(response => (
 					response.data.values.forEach((item, index) => {
 						if ( item[0] == this.date ) {
