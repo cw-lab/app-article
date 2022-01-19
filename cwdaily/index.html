@@ -159,7 +159,7 @@
 				axios
 				.get(`https://sheets.googleapis.com/v4/spreadsheets/1nfSKEEJz0TnnrM2mhH9RjpH47zpBmhL0DpT5Hw1VXIQ/values/A:G?key=AIzaSyAYvr6hqxZzO_tSoGAEW6SYcQjrH7BCIHg`)
 				.then(response => (
-					console.log(response.data.values),
+					// console.log(response.data.values),
 					response.data.values.forEach((item, index) => {
 						if ( item[0] == this.date ) {
 							this.espresso.state = true
@@ -338,7 +338,12 @@
 			created () {
 				let uri = window.location.search.substring(1); 
 				let params = new URLSearchParams(uri);
-				this.date = params.get("date");
+				if ( params.get("date") !== null ) {
+					this.date = params.get("date");
+				} else {
+					let today = new Date();
+					this.date = today.toLocaleDateString('en-CA');
+				}
 			}
 		});
 		app.mount('#app')
