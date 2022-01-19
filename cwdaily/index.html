@@ -49,7 +49,7 @@
 							</span>
 							<ul class="card-subtitle d-block fs-4 my-0 p-0" v-html="espresso.list"></ul>
 						</a>
-						<button type="button" class="d-flex p-0 mt-5" @click="clickPlay(`${date} 國際新聞掃描`, espresso.audio_url)">
+						<button type="button" class="d-flex p-0 mt-5" @click="clickPlay(`${chineseDate(date)} 國際新聞掃描`, espresso.audio_url)">
 							<img src="assets/images/earphone.svg" width="18" alt="">
 							<span class="d-block fs-6 text-black my-0">{{ espresso.audio_duration }}</span>
 						</button>
@@ -334,6 +334,10 @@
 					this.audio.url = ''
 					this.playerSimplify(1)
 				},
+				chineseDate(date) {
+					let origin = date.split('-');
+					return `${origin[0]}年${origin[1]}月${origin[2]}日`
+				}
 			},
 			created () {
 				let uri = window.location.search.substring(1); 

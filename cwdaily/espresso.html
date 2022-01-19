@@ -19,7 +19,7 @@
 			</a>
 			<main>
 				<div class="px-20">
-					<div class="fs-6 my-0 font-weight-400 text-primary">{{ date }}</div>
+					<div class="fs-6 my-0 font-weight-400 text-primary">{{ chineseDate(date) }}</div>
 					<div class="fs-1 mt-0 mb-20 font-weight-400 line-height-150">國際新聞掃描</div>
 					<div class="fs-6 mt-15 mb-0 text-gray-300">
 						<span class="author">{{ author.type }}．{{ author.name }}</span>
@@ -71,6 +71,7 @@
 					scrollToggle: false,
 					id: 0,
 					date: '',
+					date_zh: '',
 					article: '',
 					author: {
 						type: '',
@@ -86,14 +87,12 @@
 				axios
 				.get(`https://sheets.googleapis.com/v4/spreadsheets/1nfSKEEJz0TnnrM2mhH9RjpH47zpBmhL0DpT5Hw1VXIQ/values/A:G?key=AIzaSyAYvr6hqxZzO_tSoGAEW6SYcQjrH7BCIHg`)
 				.then(response => (
-					console.log(response.data.values),
 					response.data.values.forEach((item, index) => {
 						if ( item[0] == this.date ) {
-							console.log(item);
 							let data = response.data.values[index];
 							this.author.type = data[1]
 							this.author.name = data[2]
-							this.audio.title = `${this.date} 國際新聞掃描`
+							this.audio.title = `${this.chineseDate(this.date)} 國際新聞掃描`
 							this.audio.url = data[3]
 							this.article = data[6]
 						}
@@ -249,6 +248,10 @@
 					this.audio.url = ''
 					this.playerSimplify(1)
 				},
+				chineseDate(date) {
+					let origin = date.split('-');
+					return `${origin[0]}年${origin[1]}月${origin[2]}日`
+				}
 			},
 			created () {
 				let uri = window.location.search.substring(1); 
