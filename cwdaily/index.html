@@ -99,7 +99,9 @@
 						</button>
 					</div>
 				</div>
-				<div class="black" v-show="isShow" @click="isShow = !isShow"></div>
+				<transition name="fade">
+					<div class="black" v-show="isShow" @click="isShow = !isShow"></div>
+				</transition>
 				<div class="player-group" :class="{ 'scroll': scrollToggle }" v-show="playerToggle">
 					<div class="player">
 						<div class="play-pause-btn" v-show="playerToggle">  

@@ -20,7 +20,7 @@ header {
     padding-bottom: 25px;
     background-color: rgba($white, 0.95);
     backdrop-filter: blur(5px);
-    z-index: 1;
+    z-index: 2;
     .day {
         position: relative;
         padding-left: 12px;
@@ -318,7 +318,7 @@ main {
 .slide-enter-active,
 .slide-leave-active {
     transform: translateY(0%);
-    transition: transform .6s ease;
+    transition: transform .8s ease;
 }
 .slide-enter-from,
 .slide-leave-to {
