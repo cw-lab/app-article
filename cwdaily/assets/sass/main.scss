@@ -36,57 +36,60 @@ header {
             }
         }
     }
-    .calendar {
+    .calendar-hide {
         position: absolute;
         top: calc(100% - 3px);
         left: 0;
         right: 0;
-        background-color: $white;
+        overflow: hidden;
         z-index: 1;
-        .week {
-            flex-wrap: wrap;
-            &.week-title {
-                color: $gray-300;
-                font-size: 0.875rem;
-                padding-bottom: 25px;
-            }
-            &.week-day {
-                font-size: 1.125rem;
-                .item {
-                    position: relative;
-                    padding-top: 15px;
-                    padding-bottom: 15px;
-                    span {
-                        display: block;
-                        margin: auto;
-                        width: 34px;
-                        height: 34px;
-                        line-height: 34px;
-                        border-radius: 50%;
-                    }
-                    i {
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        color: $gray-300;
-                        font-size: $h6;
-                        font-style: normal;
-                        font-weight: 300;
+        .calendar {
+            background-color: $white;
+            .week {
+                flex-wrap: wrap;
+                &.week-title {
+                    color: $gray-300;
+                    font-size: 0.875rem;
+                    padding-bottom: 25px;
+                }
+                &.week-day {
+                    font-size: 1.125rem;
+                    .item {
+                        position: relative;
+                        padding-top: 15px;
+                        padding-bottom: 15px;
+                        span {
+                            display: block;
+                            margin: auto;
+                            width: 34px;
+                            height: 34px;
+                            line-height: 34px;
+                            border-radius: 50%;
+                        }
+                        i {
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            color: $gray-300;
+                            font-size: $h6;
+                            font-style: normal;
+                            font-weight: 300;
+                        }
                     }
                 }
-            }
-            .item {
-                position: relative;
-                width: (100%/7);
-                z-index: 1;
-                &.now {
-                    color: $white;
-                    span {
-                        background-color: $primary;
-                    }
-                    i {
-                        display: none;
+                .item {
+                    position: relative;
+                    width: (100%/7);
+                    z-index: 1;
+                    &.now {
+                        color: $white;
+                        span {
+                            background-color: $primary;
+                        }
+                        i {
+                            display: none;
+                        }
                     }
                 }
             }
@@ -98,6 +101,9 @@ main {
     position: relative;
     .index_page & {
         padding-top: 95px;
+        .black {
+            top: 100px;
+        }
     }
     .article_page & {
         padding-top: 76px;
@@ -187,7 +193,7 @@ main {
     }
     .black {
         position: fixed;
-        top: 40%;
+        top: 0;
         bottom: 0;
         left: 0;
         right: 0;
@@ -263,6 +269,25 @@ main {
     }
 }
 
+.message {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    .message-content {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        right: 20px;
+        padding: 25px 30px;
+        border-radius: 10px;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+}
+
 .button--back {
     display: flex;
     align-items: center;
@@ -288,4 +313,23 @@ main {
     background: $white;
     box-shadow: 0px -5px 10px rgba($black, 0.15);
     z-index: 1;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+    transform: translateY(0%);
+    transition: transform .6s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+    transform: translateY(-100%);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }

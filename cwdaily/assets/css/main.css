@@ -2032,37 +2032,41 @@ header .day img.active {
           transform: translateY(-50%) rotate(180deg);
 }
 
-header .calendar {
+header .calendar-hide {
   position: absolute;
   top: calc(100% - 3px);
   left: 0;
   right: 0;
-  background-color: #fff;
+  overflow: hidden;
   z-index: 1;
 }
 
-header .calendar .week {
+header .calendar-hide .calendar {
+  background-color: #fff;
+}
+
+header .calendar-hide .calendar .week {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
 }
 
-header .calendar .week.week-title {
+header .calendar-hide .calendar .week.week-title {
   color: #939EA7;
   font-size: 0.875rem;
   padding-bottom: 25px;
 }
 
-header .calendar .week.week-day {
+header .calendar-hide .calendar .week.week-day {
   font-size: 1.125rem;
 }
 
-header .calendar .week.week-day .item {
+header .calendar-hide .calendar .week.week-day .item {
   position: relative;
   padding-top: 15px;
   padding-bottom: 15px;
 }
 
-header .calendar .week.week-day .item span {
+header .calendar-hide .calendar .week.week-day .item span {
   display: block;
   margin: auto;
   width: 34px;
@@ -2071,7 +2075,7 @@ header .calendar .week.week-day .item span {
   border-radius: 50%;
 }
 
-header .calendar .week.week-day .item i {
+header .calendar-hide .calendar .week.week-day .item i {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -2082,21 +2086,21 @@ header .calendar .week.week-day .item i {
   font-weight: 300;
 }
 
-header .calendar .week .item {
+header .calendar-hide .calendar .week .item {
   position: relative;
   width: 14.28571%;
   z-index: 1;
 }
 
-header .calendar .week .item.now {
+header .calendar-hide .calendar .week .item.now {
   color: #fff;
 }
 
-header .calendar .week .item.now span {
+header .calendar-hide .calendar .week .item.now span {
   background-color: #D60C18;
 }
 
-header .calendar .week .item.now i {
+header .calendar-hide .calendar .week .item.now i {
   display: none;
 }
 
@@ -2106,6 +2110,10 @@ main {
 
 .index_page main {
   padding-top: 95px;
+}
+
+.index_page main .black {
+  top: 100px;
 }
 
 .article_page main {
@@ -2210,7 +2218,7 @@ main {
 
 main .black {
   position: fixed;
-  top: 40%;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -2300,6 +2308,27 @@ main .card-espresso .card-body .card-subtitle li::before {
   display: inline;
 }
 
+.message {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.message .message-content {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  padding: 25px 30px;
+  border-radius: 10px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  z-index: 1;
+}
+
 .button--back {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2337,5 +2366,32 @@ main .card-espresso .card-body .card-subtitle li::before {
   -webkit-box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.15);
           box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.15);
   z-index: 1;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  -webkit-transform: translateY(0%);
+          transform: translateY(0%);
+  -webkit-transition: -webkit-transform .6s ease;
+  transition: -webkit-transform .6s ease;
+  transition: transform .6s ease;
+  transition: transform .6s ease, -webkit-transform .6s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  -webkit-transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 /*# sourceMappingURL=main.css.map */
